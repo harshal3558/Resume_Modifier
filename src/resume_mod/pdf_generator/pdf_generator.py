@@ -193,3 +193,61 @@ def generate_pdf_from_latex(
         )
 
     return str(output_path)
+
+
+
+# filename = "omkar_latex.pdf"
+
+# latex_text = r"""
+# \documentclass[11pt,a4paper]{article}
+
+# \usepackage{fontspec}
+# \usepackage{geometry}
+# \usepackage{enumitem}
+
+# \geometry{
+#     top=20mm,
+#     bottom=20mm,
+#     left=20mm,
+#     right=20mm
+# }
+
+# \setmainfont{DejaVu Sans}
+
+# \begin{document}
+
+# \begin{center}
+#     {\LARGE \textbf{Omkar}}
+
+#     \vspace{4mm}
+
+#     {\large Python Developer}
+# \end{center}
+
+# \section*{Skills}
+
+# \begin{itemize}[noitemsep]
+#     \item Python
+#     \item LangChain
+#     \item ChromaDB
+#     \item Machine Learning
+# \end{itemize}
+
+# \section*{Experience}
+
+# Developed an AI-powered resume processing system
+# using Python, LangChain, embeddings, and ChromaDB.
+
+# \section*{Education}
+
+# Bachelor of Engineering in Computer Science.
+
+# \end{document}
+# """
+
+# pdf_path = generate_pdf_from_latex(
+#     filename=filename,
+#     latex_text=latex_text,
+# )
+
+# print(f"LaTeX PDF generated successfully: {pdf_path}")
