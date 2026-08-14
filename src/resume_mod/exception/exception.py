@@ -6,16 +6,13 @@ Custom exception with rich error context (file + line number).
 
 import logging
 import sys
-<<<<<<< HEAD
 # from src.logger import logging
-=======
 
 LOGGER = logging.getLogger("resume_mod.exception")
 
 
 def error_message_detail(error: Exception, error_detail: sys) -> str:
     """Extract file name and line number from the traceback."""
->>>>>>> 6816bf0 (project is almost done)
 
     _, _, exc_tb = error_detail.exc_info()
 
