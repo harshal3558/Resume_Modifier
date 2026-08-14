@@ -13,6 +13,9 @@ BASE_DIR = Path(__file__).resolve().parents[3]
 OUTPUT_DIR = BASE_DIR / "data" / "updated_pdfs"
 
 
+
+
+
 def generate_pdf(
     filename: str,
     text: str,
@@ -28,7 +31,7 @@ def generate_pdf(
     if not filename.lower().endswith(".pdf"):
         filename = f"{filename}.pdf"
 
-    output_path = OUTPUT_DIR / filename
+    output_path = OUTPUT_DIR / "omkar.pdf" #filename
 
     document = SimpleDocTemplate(
         str(output_path),
@@ -73,3 +76,33 @@ def generate_pdf(
     document.build(story)
 
     return str(output_path)
+
+
+
+# filename = "omkar.pdf"
+
+# text = """
+# Omkar 
+
+# Python Developer
+
+# Skills:
+# Python
+# LangChain
+# ChromaDB
+# Machine Learning
+
+# Experience:
+# Developed an AI-powered resume processing system
+# using Python, LangChain, embeddings, and ChromaDB.
+
+# Education:
+# Bachelor of Engineering in Computer Science.
+# """
+
+# pdf_path = generate_pdf(
+#     filename=filename,
+#     text=text,
+# )
+
+# print(f"PDF generated successfully: {pdf_path}")
