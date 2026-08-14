@@ -6,7 +6,7 @@ from resume_mod.ingestion import (
     DocumentLoader,
     DocumentProcessor,
 )
-from resume_mod.retrieval import (
+from resume_mod.store import (
     VectorStore,
 )
 
