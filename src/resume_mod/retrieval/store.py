@@ -6,7 +6,7 @@ from pathlib import Path
 from langchain_core.documents import Document
 
 from resume_mod.config import get_settings
-from helpdesk_agent.llm import EmbeddingGateway
+# from resume_mode.llm import EmbeddingGateway
 from resume_mod.ingestion import (
     DocumentLoader,
     DocumentProcessor,
