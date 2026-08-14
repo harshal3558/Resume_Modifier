@@ -4,9 +4,10 @@ import logging
 from pathlib import Path
 
 from langchain_core.documents import Document
+from langchain_core.embeddings import Embeddings
+
 
 from resume_mod.config import get_settings
-# from resume_mode.llm import EmbeddingGateway
 from resume_mod.ingestion import (
     DocumentLoader,
     DocumentProcessor,
@@ -17,6 +18,78 @@ LOGGER = logging.getLogger(
     "helpdesk_agent.retrieval"
 )
 
+class EmbeddingGateway:
+
+    def __init__(
+        self,
+        model: str | None = None,
+    ):
+
+        from resume_mod.config import (
+            get_settings,
+        )
+
+        settings = get_settings()
+
+        self.provider = (
+            settings.embedding_provider.lower()
+        )
+
+        self.model_name = (
+            model
+            or settings.embedding_model
+        )
+
+        self._embeddings: Embeddings | None = None
+
+    def get_embeddings(
+        self,
+    ) -> Embeddings:
+
+        if self._embeddings is not None:
+
+            return self._embeddings
+
+
+        if self.provider == "huggingface":
+
+            from langchain_huggingface import (
+                HuggingFaceEmbeddings,
+            )
+
+            self._embeddings = (
+                HuggingFaceEmbeddings(
+                    model_name=self.model_name
+                )
+            )
+
+        elif self.provider == "google":
+
+            from langchain_google_genai import (
+                GoogleGenerativeAIEmbeddings,
+            )
+
+            self._embeddings = (
+                GoogleGenerativeAIEmbeddings(
+                    model=self.model_name
+                )
+            )
+
+        else:
+
+            raise ValueError(
+                "Unsupported embedding provider: "
+                f"{self.provider}"
+            )
+
+        LOGGER.info(
+            "Initialized embedding provider=%s "
+            "model=%s",
+            self.provider,
+            self.model_name,
+        )
+
+        return self._embeddings
 
 class VectorStore:
 
