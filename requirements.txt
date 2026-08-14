@@ -1,0 +1,29 @@
+# Environment
+python-dotenv
+
+# LangChain core
+langchain
+langchain-core
+langchain-community
+langchain-text-splitters
+
+# LangChain integrations
+langchain-groq
+langchain-google-genai
+langchain-chroma
+langchain-huggingface
+
+# Hugging Face / embeddings
+sentence-transformers
+huggingface-hub
+
+# Document processing
+PyMuPDF
+docx2txt
+
+# Vector database
+chromadb
+
+# Web search / scraping
+tavily-python
+apify-client
