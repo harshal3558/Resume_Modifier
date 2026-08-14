@@ -8,7 +8,7 @@ from langchain_text_splitters import (
     RecursiveCharacterTextSplitter,
 )
 
-from helpdesk_agent.config import get_settings
+from resume_mod.config import get_settings
 
 
 LOGGER = logging.getLogger(
