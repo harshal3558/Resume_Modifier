@@ -31,7 +31,7 @@ def generate_pdf(
     if not filename.lower().endswith(".pdf"):
         filename = f"{filename}.pdf"
 
-    output_path = OUTPUT_DIR / "omkar.pdf" #filename
+    output_path = OUTPUT_DIR / filename
 
     document = SimpleDocTemplate(
         str(output_path),
@@ -79,7 +79,7 @@ def generate_pdf(
 
 
 
-# filename = "omkar.pdf"
+# filename = "omkar_.pdf"
 
 # text = """
 # Omkar 
