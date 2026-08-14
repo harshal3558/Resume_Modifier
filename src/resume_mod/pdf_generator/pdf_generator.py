@@ -1,28 +1,41 @@
 from __future__ import annotations
 
-from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+from pathlib import Path
 
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import mm
-from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
+from reportlab.platypus import (
+    Paragraph,
+    SimpleDocTemplate,
+    Spacer,
+)
 
 
 BASE_DIR = Path(__file__).resolve().parents[3]
-OUTPUT_DIR = BASE_DIR / "data" / "updated_pdfs"
 
-
-
+OUTPUT_DIR = (
+    BASE_DIR
+    / "data"
+    / "updated_pdfs"
+)
 
 
 def generate_pdf(
     filename: str,
     text: str,
 ) -> str:
+    """
+    Generate a PDF using ReportLab.
+
+    The generated PDF is stored inside:
+
+        data/updated_pdfs/
+    """
 
     OUTPUT_DIR.mkdir(
         parents=True,
@@ -48,6 +61,7 @@ def generate_pdf(
     styles = getSampleStyleSheet()
 
     body_style = styles["BodyText"]
+
     body_style.alignment = TA_LEFT
     body_style.fontSize = 11
     body_style.leading = 16
@@ -55,9 +69,11 @@ def generate_pdf(
     story = []
 
     for paragraph in text.split("\n"):
+
         paragraph = paragraph.strip()
 
         if paragraph:
+
             paragraph = (
                 paragraph
                 .replace("&", "&amp;")
@@ -76,39 +92,11 @@ def generate_pdf(
                 Spacer(1, 6)
             )
 
-    document.build(story)
+    document.build(
+        story
+    )
 
     return str(output_path)
-
-
-
-# filename = "omkar_.pdf"
-
-# text = """
-# Omkar 
-
-# Python Developer
-
-# Skills:
-# Python
-# LangChain
-# ChromaDB
-# Machine Learning
-
-# Experience:
-# Developed an AI-powered resume processing system
-# using Python, LangChain, embeddings, and ChromaDB.
-
-# Education:
-# Bachelor of Engineering in Computer Science.
-# """
-
-# pdf_path = generate_pdf(
-#     filename=filename,
-#     text=text,
-# )
-
-# print(f"PDF generated successfully: {pdf_path}")
 
 
 def generate_pdf_from_latex(
@@ -116,10 +104,14 @@ def generate_pdf_from_latex(
     latex_text: str,
 ) -> str:
     """
-    Convert LaTeX text into a PDF using XeLaTeX.
+    Generate a PDF from LaTeX using XeLaTeX.
 
-    The generated PDF is stored in the same OUTPUT_DIR
-    used by generate_pdf().
+    The resulting PDF is stored in:
+
+        data/updated_pdfs/
+
+    Temporary LaTeX files such as .aux, .log and .out
+    are automatically removed.
     """
 
     OUTPUT_DIR.mkdir(
@@ -134,61 +126,135 @@ def generate_pdf_from_latex(
 
     output_path = OUTPUT_DIR / filename
 
-    xelatex = shutil.which("xelatex")
+    # ---------------------------------------------------------
+    # Find XeLaTeX
+    # ---------------------------------------------------------
+
+    xelatex = shutil.which(
+        "xelatex"
+    )
 
     if xelatex is None:
+
         raise RuntimeError(
-            "xelatex was not found. "
-            "Install XeLaTeX and make sure it is available in PATH."
+            "xelatex was not found in PATH.\n\n"
+            "Install it using:\n"
+            "sudo apt update\n"
+            "sudo apt install texlive-xetex "
+            "texlive-latex-extra "
+            "texlive-fonts-recommended"
         )
 
-    # Create a temporary directory for .tex, .aux, .log, etc.
+    # ---------------------------------------------------------
+    # Temporary compilation directory
+    # ---------------------------------------------------------
+
     with tempfile.TemporaryDirectory() as temp_dir:
-        temp_dir = Path(temp_dir)
 
-        tex_path = temp_dir / "document.tex"
+        temp_dir = Path(
+            temp_dir
+        )
 
+        tex_path = (
+            temp_dir
+            / "document.tex"
+        )
+
+        pdf_path = (
+            temp_dir
+            / "document.pdf"
+        )
+
+        log_path = (
+            temp_dir
+            / "document.log"
+        )
+
+        # -----------------------------------------------------
         # Write LaTeX source
+        # -----------------------------------------------------
+
         tex_path.write_text(
             latex_text,
             encoding="utf-8",
         )
 
+        # -----------------------------------------------------
+        # XeLaTeX command
+        # -----------------------------------------------------
+
         command = [
             xelatex,
             "-interaction=nonstopmode",
             "-halt-on-error",
+            "-file-line-error",
             "-output-directory",
             str(temp_dir),
             str(tex_path),
         ]
 
-        try:
-            result = subprocess.run(
-                command,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-                check=True,
+        # -----------------------------------------------------
+        # Compile twice
+        # -----------------------------------------------------
+
+        for attempt in range(2):
+
+            try:
+
+                result = subprocess.run(
+                    command,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    check=True,
+                )
+
+            except subprocess.CalledProcessError as exc:
+
+                log_content = ""
+
+                if log_path.exists():
+
+                    try:
+                        log_content = (
+                            log_path.read_text(
+                                encoding="utf-8",
+                                errors="replace",
+                            )
+                        )
+
+                    except Exception:
+                        log_content = ""
+
+                raise RuntimeError(
+                    "XeLaTeX failed to generate the PDF.\n\n"
+                    f"Command:\n"
+                    f"{' '.join(command)}\n\n"
+                    f"stdout:\n"
+                    f"{exc.stdout}\n\n"
+                    f"stderr:\n"
+                    f"{exc.stderr}\n\n"
+                    f"LaTeX log:\n"
+                    f"{log_content[-10000:]}"
+                ) from exc
+
+        # -----------------------------------------------------
+        # Verify PDF
+        # -----------------------------------------------------
+
+        if not pdf_path.exists():
+
+            raise RuntimeError(
+                "XeLaTeX completed successfully, "
+                "but the PDF file was not created."
             )
 
-        except subprocess.CalledProcessError as exc:
-            raise RuntimeError(
-                "XeLaTeX failed to generate the PDF.\n\n"
-                f"stdout:\n{exc.stdout}\n\n"
-                f"stderr:\n{exc.stderr}"
-            ) from exc
+        # -----------------------------------------------------
+        # Copy final PDF
+        # -----------------------------------------------------
 
-        generated_pdf = temp_dir / "document.pdf"
-
-        if not generated_pdf.exists():
-            raise RuntimeError(
-                "XeLaTeX completed but the PDF was not created."
-            )
-
-        # Move final PDF to your existing output directory.
         shutil.copy2(
-            generated_pdf,
+            pdf_path,
             output_path,
         )
 
