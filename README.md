@@ -11,11 +11,12 @@
     |
 User Query [runner.py]
     |
- - serching[retrieval(SearchEngine)]
+ - searching[retrieval(SearchEngine)]
     |
 reranking[retrieval]
     |
 sytemprompt + userpromt[prompt]
+    |
 LLM[llm_rollback]
     |
 output(variable dict with filename and text)
