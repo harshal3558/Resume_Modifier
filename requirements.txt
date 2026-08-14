@@ -7,9 +7,11 @@ langchain-core
 langchain-community
 langchain-text-splitters
 
-# LangChain integrations
+# LangChain LLM integrations (Groq + Google Gemini only)
 langchain-groq
 langchain-google-genai
+
+# LangChain vector store + embeddings
 langchain-chroma
 langchain-huggingface
 
@@ -28,6 +30,9 @@ chromadb
 tavily-python
 apify-client
 
-#genrating pdf
-
+# PDF generation
 reportlab
+
+# Memory queue (optional — Redis must be running)
+redis
+groq
