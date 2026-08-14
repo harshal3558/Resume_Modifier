@@ -27,3 +27,7 @@ chromadb
 # Web search / scraping
 tavily-python
 apify-client
+
+#genrating pdf
+
+reportlab
