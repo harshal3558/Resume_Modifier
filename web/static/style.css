@@ -1,0 +1,820 @@
+/* =================================================================---------
+   ResumeAI Premium CSS Variables & Reset
+   ========================================================================== */
+
+:root {
+    --bg-main: #0a0d14;
+    --bg-card: #111520;
+    --bg-card-hover: #161c2b;
+    --bg-overlay: rgba(10, 13, 20, 0.85);
+    
+    --color-primary: #4f46e5;
+    --color-primary-hover: #4338ca;
+    --color-primary-light: #818cf8;
+    --color-success: #10b981;
+    --color-success-hover: #059669;
+    --color-error: #f43f5e;
+    --color-warning: #f59e0b;
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: #1e293b;
+    --border-hover: #334155;
+    
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+    --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.15);
+    
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* =================================================================---------
+   Typography & Basic Components
+   ========================================================================== */
+
+h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+}
+
+p {
+    color: var(--text-secondary);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =================================================================---------
+   Application Layout
+   ========================================================================== */
+
+.app-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+/* Header */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1.5rem;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-icon {
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulse 3s infinite;
+}
+
+.logo-text {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.header-tagline {
+    font-family: var(--font-heading);
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.95rem;
+    background: rgba(30, 41, 59, 0.5);
+    padding: 0.4rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid var(--border-color);
+}
+
+/* Grid Layout */
+.app-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 2.5rem;
+    flex: 1;
+}
+
+.grid-col-left, .grid-col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Card Styling */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.section-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.section-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* =================================================================---------
+   Hero / Intro Card
+   ========================================================================== */
+
+.hero-card {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(99, 102, 241, 0.05)), var(--bg-card);
+    border: 1px solid rgba(79, 70, 229, 0.25);
+}
+
+.hero-card h1 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #ffffff, #c7d2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-card p {
+    font-size: 1.05rem;
+}
+
+/* =================================================================---------
+   Base Resume States
+   ========================================================================== */
+
+.state-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.empty-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+/* Drag & Drop Upload Zone */
+.upload-zone {
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(15, 23, 42, 0.3);
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--color-primary-light);
+    background: rgba(79, 70, 229, 0.06);
+}
+
+.upload-icon {
+    font-size: 2.5rem;
+}
+
+.upload-title {
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.upload-or {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Active Resume Display */
+.resume-badge {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: var(--color-success);
+    padding: 0.4rem 0.8rem;
+    border-radius: 9999px;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.resume-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.resume-icon {
+    font-size: 2rem;
+}
+
+.resume-details {
+    flex: 1;
+    overflow: hidden;
+}
+
+.resume-filename {
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.resume-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.resume-selector-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.control-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.form-select {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: var(--transition-fast);
+    cursor: pointer;
+}
+
+.form-select:focus {
+    border-color: var(--color-primary-light);
+}
+
+/* =================================================================---------
+   Buttons
+   ========================================================================== */
+
+.btn {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: var(--transition-fast);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-primary), #6366f1);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #4338ca, #4f46e5);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(30, 41, 59, 0.6);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: var(--border-hover);
+}
+
+.btn-block {
+    display: flex;
+    width: 100%;
+}
+
+.btn-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* =================================================================---------
+   Tailor Panel & Input
+   ========================================================================== */
+
+.tailor-card {
+    position: relative;
+}
+
+.tailor-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-overlay);
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    z-index: 10;
+    transition: var(--transition-normal);
+}
+
+.overlay-lock {
+    font-size: 3rem;
+    animation: pulse 2s infinite;
+}
+
+.overlay-text {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-textarea {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    resize: vertical;
+    outline: none;
+    transition: var(--transition-normal);
+}
+
+.form-textarea:focus:not(:disabled) {
+    border-color: var(--color-primary-light);
+    background: rgba(15, 23, 42, 0.6);
+    box-shadow: 0 0 15px rgba(79, 70, 229, 0.1);
+}
+
+.textarea-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.char-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* =================================================================---------
+   Generated Resumes List
+   ========================================================================== */
+
+.resumes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* Custom Scrollbar for list */
+.resumes-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.resumes-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.resumes-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 9999px;
+}
+
+.resumes-list::-webkit-scrollbar-thumb:hover {
+    background: var(--border-hover);
+}
+
+.list-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    border: 1px dashed var(--border-color);
+    border-radius: 12px;
+    color: var(--text-secondary);
+}
+
+/* Resume Card item */
+.resume-item-card {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    transition: var(--transition-normal);
+}
+
+.resume-item-card:hover {
+    border-color: var(--border-hover);
+    background: rgba(15, 23, 42, 0.7);
+}
+
+.resume-item-details {
+    flex: 1;
+    overflow: hidden;
+}
+
+.resume-item-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+.resume-item-file {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-top: 0.1rem;
+}
+
+.resume-item-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+}
+
+.resume-item-action {
+    flex-shrink: 0;
+}
+
+/* =================================================================---------
+   Progress & Loading Modal Overlay
+   ========================================================================== */
+
+.progress-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-overlay);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.progress-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(79, 70, 229, 0.25);
+    border-radius: 20px;
+    padding: 3rem;
+    width: 90%;
+    max-width: 480px;
+    text-align: center;
+    box-shadow: var(--shadow-lg), 0 0 40px rgba(79, 70, 229, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.progress-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+/* Spinner Animation */
+.progress-spinner {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.spinner-ring {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--color-primary-light);
+    border-bottom-color: var(--color-primary);
+    animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.spinner-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    color: var(--color-primary-light);
+    animation: rotate-core 4s linear infinite;
+}
+
+/* Steps Pipeline */
+.progress-steps {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    list-style: none;
+    text-align: left;
+    padding: 0 1rem;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: var(--transition-normal);
+}
+
+.step-indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.step-text {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* Step States */
+.step-item.pending {
+    color: var(--text-muted);
+}
+
+.step-item.pending .step-indicator {
+    border-color: var(--text-muted);
+}
+
+.step-item.active {
+    color: var(--text-primary);
+}
+
+.step-item.active .step-indicator {
+    border-color: var(--color-primary-light);
+    background: rgba(79, 70, 229, 0.1);
+}
+
+.step-item.active .step-indicator::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: var(--color-primary-light);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+.step-item.completed {
+    color: var(--text-primary);
+}
+
+.step-item.completed .step-indicator {
+    border-color: var(--color-success);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.step-item.completed .step-indicator::after {
+    content: '✓';
+    color: var(--color-success);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* =================================================================---------
+   Toast Notifications
+   ========================================================================== */
+
+.toast-container {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    z-index: 10000;
+}
+
+.toast {
+    min-width: 280px;
+    max-width: 400px;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: var(--transition-normal);
+}
+
+.toast-success {
+    border-left: 4px solid var(--color-success);
+}
+
+.toast-error {
+    border-left: 4px solid var(--color-error);
+}
+
+.toast-warning {
+    border-left: 4px solid var(--color-warning);
+}
+
+.toast-icon {
+    font-size: 1.2rem;
+}
+
+.toast-content {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.toast-close {
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    border: none;
+    background: transparent;
+    outline: none;
+}
+
+.toast-close:hover {
+    color: var(--text-primary);
+}
+
+/* =================================================================---------
+   Footer
+   ========================================================================== */
+
+.app-footer {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+    text-align: center;
+}
+
+.app-footer p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* =================================================================---------
+   Keyframe Animations
+   ========================================================================== */
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes rotate-core {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.95); opacity: 0.6; }
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(100%) translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* =================================================================---------
+   Responsive Layout (Media Queries)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .app-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .hero-card h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .app-container {
+        padding: 1.5rem 1rem;
+        gap: 1.5rem;
+    }
+    
+    .app-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .card {
+        padding: 1.5rem;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+}
