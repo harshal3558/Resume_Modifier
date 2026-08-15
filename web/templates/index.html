@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeMod — AI-Powered Resume Tailoring</title>
+    <meta name="description" content="Tailor your base resume for every job opportunity using advanced AI retrieval and generation.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-logo">
+                <span class="logo-icon">✦</span>
+                <span class="logo-text">ResumeMod</span>
+            </div>
+            <div class="header-tagline">AI-Powered Resume Tailoring</div>
+        </header>
+
+        <!-- Grid Layout -->
+        <main class="app-grid">
+
+            <!-- Left Column: Base Resume Control & Hero -->
+            <section class="grid-col-left">
+                
+                <!-- Hero Panel -->
+                <div class="card hero-card">
+                    <h1>Tailor your resume for every opportunity.</h1>
+                    <p>Upload your base resume and let AI create a job-specific, ATS-optimized version in seconds.</p>
+                </div>
+
+                <!-- Base Resume Selection Card -->
+                <div class="card base-resume-card" id="base-resume-section">
+                    <h2 class="section-title">Base Resume</h2>
+                    
+                    <!-- State 1: No Resume Uploaded -->
+                    <div id="state-no-resume" class="state-container">
+                        <p class="empty-text">No resume uploaded yet. Upload your resume to unlock job description tailoring.</p>
+                        
+                        <div class="upload-zone" id="upload-zone">
+                            <span class="upload-icon">📁</span>
+                            <span class="upload-title">Drag & drop PDF here</span>
+                            <span class="upload-or">or</span>
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('file-upload-input').click()">
+                                Choose File
+                            </button>
+                            <input type="file" id="file-upload-input" accept=".pdf" style="display: none;">
+                        </div>
+                    </div>
+
+                    <!-- State 2: Resume Exists -->
+                    <div id="state-resume-exists" class="state-container hidden">
+                        <div class="resume-badge">
+                            <span class="badge-icon">✓</span>
+                            <span class="badge-text">Base Resume Ready</span>
+                        </div>
+                        <div class="resume-info">
+                            <div class="resume-icon">📄</div>
+                            <div class="resume-details">
+                                <div class="resume-filename" id="active-resume-name">Filename.pdf</div>
+                                <div class="resume-meta">Source Document</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Switch Resume Selector -->
+                        <div class="resume-selector-container" id="resume-selector-container">
+                            <label for="resume-select" class="control-label">Select Active Resume</label>
+                            <select id="resume-select" class="form-select">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('file-change-input').click()">
+                                ↺ Change Resume
+                            </button>
+                            <input type="file" id="file-change-input" accept=".pdf" style="display: none;">
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Right Column: Tailoring Action -->
+            <section class="grid-col-right">
+
+                <!-- Tailor Form Card -->
+                <div class="card tailor-card" id="tailor-card">
+                    <div class="tailor-overlay" id="tailor-overlay">
+                        <span class="overlay-lock">🔒</span>
+                        <p class="overlay-text">Upload your base resume first to unlock tailoring</p>
+                    </div>
+
+                    <h2 class="section-title">Tailor Your Resume</h2>
+                    <p class="section-desc">Paste the job description below to customize your experience highlights.</p>
+                    
+                    <form id="tailor-form" onsubmit="event.preventDefault();">
+                        <div class="form-group">
+                            <textarea 
+                                id="job-description-input" 
+                                class="form-textarea" 
+                                placeholder="Paste the complete job description here..."
+                                rows="8"
+                                disabled
+                            ></textarea>
+                        </div>
+                        
+                        <div class="textarea-footer">
+                            <span class="char-count"><span id="char-count-val">0</span> characters</span>
+                        </div>
+
+                        <button type="submit" id="generate-btn" class="btn btn-primary btn-block" disabled>
+                            Generate Tailored Resume ✦
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Generated Resumes List Card -->
+                <div class="card generated-card">
+                    <h2 class="section-title">Your Generated Resumes</h2>
+                    <p class="section-desc">Download recently compiled tailored PDFs.</p>
+                    
+                    <div class="resumes-list" id="resumes-list">
+                        <!-- Loaded dynamically -->
+                        <div class="list-empty">
+                            <p>No tailored resumes generated yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p><strong>ResumeMod</strong> — AI-powered resume tailoring</p>
+        </footer>
+
+    </div>
+
+    <!-- Compilation Progress Overlay -->
+    <div class="progress-overlay hidden" id="progress-overlay">
+        <div class="progress-card">
+            <h3 class="progress-title">Tailoring Resume</h3>
+            
+            <div class="progress-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-core">✦</div>
+            </div>
+
+            <ul class="progress-steps">
+                <li id="step-1" class="step-item pending">
+                    <span class="step-indicator"></span>
+                    <span class="step-text">Analyzing job description</span>
+                </li>
+                <li id="step-2" class="step-item pending">
+                    <span class="step-indicator"></span>
+                    <span class="step-text">Matching your experience</span>
+                </li>
+                <li id="step-3" class="step-item pending">
+                    <span class="step-indicator"></span>
+                    <span class="step-text">Generating tailored resume</span>
+                </li>
+                <li id="step-4" class="step-item pending">
+                    <span class="step-indicator"></span>
+                    <span class="step-text">Creating PDF</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
