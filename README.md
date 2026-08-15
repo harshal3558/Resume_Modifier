@@ -24,3 +24,6 @@ output(variable dict with filename and text)
 pdf genrator[pdf_generator(generate_pdf)]
     |
 user acknowlegdement(print)[runner.py]
+
+
+ - Starting Syntax : uv run uvicorn web.app:app --reload
